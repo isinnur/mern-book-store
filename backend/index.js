@@ -3,18 +3,22 @@ import { PORT, mongoDBURL } from "./config.js";
 import mongoose from "mongoose";
 import { Book } from "./models/bookModel.js";
 
+//express uygulamasının oluşturulması
 const app = express();
 
 // Middleware for parsing request body  --->>postman
+//istek gövdelerini ayrıştırmak için
 app.use(express.json());
 
 // "/" (kök) yoluna yapılan GET isteklerini ele alır
+//kullanıcı anasayfasında görünen mesaj
 app.get("/", (request, response) => {
   console.log(request);
   return response.status(234).send("Welcome To Mern Stack Tutorial");
 });
 
 //route for save a new book
+//yeni kitap ekleme yolu (post)
 app.post("/books", async (request, response) => {
   try {
     if (
@@ -40,6 +44,7 @@ app.post("/books", async (request, response) => {
   }
 });
 
+//mongoDB bağlantısı ve express uygulamasının dinlenmesi
 mongoose
   .connect(mongoDBURL)
   .then(() => {
