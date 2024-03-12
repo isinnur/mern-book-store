@@ -44,6 +44,23 @@ app.post("/books", async (request, response) => {
   }
 });
 
+//router for get all books from database
+//get isteğinin işlenmesi
+app.get("/books", async (request, response) => {
+  try {
+    //kitapların getirilmesi
+    const books = await Book.find({});
+    //cevap oluşturma ve gönderme
+    return response.status(200).json({
+      count: books.length,
+      data: books,
+    });
+  } catch (error) {
+    console.log(error.message);
+    response.status(500).send({ message: error.message });
+  }
+});
+
 //mongoDB bağlantısı ve express uygulamasının dinlenmesi
 mongoose
   .connect(mongoDBURL)
