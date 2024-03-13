@@ -16,13 +16,13 @@ app.use(express.json());
 //option 1
 app.use(cors());
 //option 2
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type"],
-  })
-);
+// app.use(
+//   cors({
+//     origin: "http://localhost:3000",
+//     methods: ["GET", "POST", "PUT", "DELETE"],
+//     allowedHeaders: ["Content-Type"],
+//   })
+// );
 
 // "/" (kök) yoluna yapılan GET isteklerini ele alır
 //? kullanıcı anasayfasında görünen mesaj
