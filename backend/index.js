@@ -3,6 +3,7 @@ import { PORT, mongoDBURL } from "./config.js";
 import mongoose from "mongoose";
 import { Book } from "./models/bookModel.js";
 import booksRoute from "./routes/booksRoute.js";
+import cors from "cors";
 
 //? express uygulamasının oluşturulması
 const app = express();
@@ -10,6 +11,18 @@ const app = express();
 // Middleware for parsing request body  --->>postman
 //? istek gövdelerini ayrıştırmak için
 app.use(express.json());
+
+// Middleware for handling cors policy
+//option 1
+app.use(cors());
+//option 2
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type"],
+  })
+);
 
 // "/" (kök) yoluna yapılan GET isteklerini ele alır
 //? kullanıcı anasayfasında görünen mesaj
