@@ -1,24 +1,24 @@
-import express from "express";
+import express, { response } from "express";
 import { PORT, mongoDBURL } from "./config.js";
 import mongoose from "mongoose";
 import { Book } from "./models/bookModel.js";
 
-//express uygulamasının oluşturulması
+//? express uygulamasının oluşturulması
 const app = express();
 
 // Middleware for parsing request body  --->>postman
-//istek gövdelerini ayrıştırmak için
+//? istek gövdelerini ayrıştırmak için
 app.use(express.json());
 
 // "/" (kök) yoluna yapılan GET isteklerini ele alır
-//kullanıcı anasayfasında görünen mesaj
+//? kullanıcı anasayfasında görünen mesaj
 app.get("/", (request, response) => {
   console.log(request);
   return response.status(234).send("Welcome To Mern Stack Tutorial");
 });
 
-//route for save a new book
-//yeni kitap ekleme yolu (post)
+//! route for save a new book
+//? yeni kitap ekleme yolu (post)
 app.post("/books", async (request, response) => {
   try {
     if (
@@ -44,8 +44,8 @@ app.post("/books", async (request, response) => {
   }
 });
 
-//router for get all books from database
-//get isteğinin işlenmesi
+// !route for get all books from database
+//? get isteğinin işlenmesi
 app.get("/books", async (request, response) => {
   try {
     //kitapların getirilmesi
@@ -61,7 +61,8 @@ app.get("/books", async (request, response) => {
   }
 });
 
-//route for get one book from database by id
+//!route for get one book from database by id
+//? id ile bir kitap seçme
 app.get("/books/:id", async (request, response) => {
   try {
     const { id } = request.params;
@@ -80,7 +81,8 @@ app.get("/books/:id", async (request, response) => {
   }
 });
 
-//route for update a book
+//! route for update a book
+//? bir kitabı güncelleme
 app.put("/books/:id", async (request, response) => {
   try {
     if (
@@ -104,7 +106,27 @@ app.put("/books/:id", async (request, response) => {
   }
 });
 
-//mongoDB bağlantısı ve express uygulamasının dinlenmesi
+//! route for delete a book
+//? bir kitanı silme
+//* we need a id and button
+app.delete("/books/:id", async (request, response) => {
+  try {
+    const { id } = request.params;
+    const result = await Book.findByIdAndDelete(id);
+
+    if (!result) {
+      //error message
+      return response.status(404).json({ message: "Book not found" });
+    }
+    //success message
+    return response.status(200).send({ message: "Book updated successfully" });
+  } catch (error) {
+    console.log(error.message);
+    response.status(500).send({ message: error.message });
+  }
+});
+
+//! mongoDB bağlantısı ve express uygulamasının dinlenmesi
 mongoose
   .connect(mongoDBURL)
   .then(() => {
